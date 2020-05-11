@@ -5,6 +5,11 @@ TagManager:
   serializedVersion: 2
   tags:
   - Ground
+  - komunikat
+  - komunikat1
+  - kolce
+  - wahadlo
+  - kolce_roof
   layers:
   - Default
   - TransparentFX

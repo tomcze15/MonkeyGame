@@ -24,7 +24,7 @@ namespace MonkeyGame.Scripts
         public override void UpdateAbility(CharacterState characterState, Animator animator, AnimatorStateInfo stateInfo)
         {
             ThirdPersonCharacterController characterController = characterState.GetThirdPersonCharacterController(animator);
-            //characterController.GravityMultiplier = Gravity.Evaluate(stateInfo.normalizedTime);
+            characterController.GravityMultiplier = Gravity.Evaluate(stateInfo.normalizedTime);
         }
     }
 }

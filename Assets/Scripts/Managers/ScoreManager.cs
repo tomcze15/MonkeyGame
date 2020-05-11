@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using MonkeyGame.Scripts;
+using System;
 
 namespace MonkeyGame.Manager
 {
@@ -8,14 +9,13 @@ namespace MonkeyGame.Manager
         [SerializeField] private int score;
         [SerializeField] private Collectible[] bananas;
 
+        public event Action AddedScore;
+
         private void Awake()
         {
             if (ScoreManager.Instance)
                 DontDestroyOnLoad(this.gameObject);
-        }
 
-        private void Start()
-        {
             bananas = FindObjectsOfType<Collectible>();
             foreach (var banana in bananas)
                 banana.PickUp += AddScore;
@@ -31,6 +31,7 @@ namespace MonkeyGame.Manager
         public void AddScore(TypeCollect banana)
         {
             score += (int)banana;
+            AddedScore();
         }
 
         public int GetScore() => score;

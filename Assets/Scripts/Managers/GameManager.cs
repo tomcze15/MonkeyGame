@@ -1,18 +1,23 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class GameManager : MonoBehaviour
+namespace MonkeyGame.Manager
 {
-    // Start is called before the first frame update
-    void Start()
+    public class GameManager : MonoBehaviour
     {
-        Cursor.visible = false;
-    }
+        [SerializeField] int health;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+
+        // Start is called before the first frame update
+        void Start()
+        {
+            Cursor.visible = false;
+            health = 3; //Test
+        }
+
+        // Update is called once per frame
+        void Update()
+        {
+
+        }
     }
 }

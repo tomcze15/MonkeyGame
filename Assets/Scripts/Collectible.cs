@@ -5,7 +5,6 @@ namespace MonkeyGame
     public enum TypeCollect : sbyte
     {
         Basic = 1,
-        Black = 3,
         Gold = 10
     }
 
@@ -19,7 +18,7 @@ namespace MonkeyGame
         private void OnTriggerEnter(Collider collision)
         {
             PickUp(type);
-            gameObject.SetActive(false); //Destroy(this.gameObject);
+            gameObject.transform.parent.gameObject.SetActive(false); //Destroy(this.gameObject);
         }
 
         public TypeCollect GetType() => type;

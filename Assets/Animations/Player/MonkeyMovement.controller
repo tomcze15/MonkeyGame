@@ -101,6 +101,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ListAbilityData:
   - {fileID: 11400000, guid: 33776673c48a2eb44b6f467ac29155ce, type: 2}
+  - {fileID: 11400000, guid: ae2623735be836a498264403e7efb947, type: 2}
   CharacterController: {fileID: 0}
 --- !u!1101 &-8372494275403343094
 AnimatorStateTransition:
@@ -282,9 +283,9 @@ AnimatorStateMachine:
   m_EntryTransitions: []
   m_StateMachineTransitions: {}
   m_StateMachineBehaviours: []
-  m_AnyStatePosition: {x: -190, y: 20, z: 0}
-  m_EntryPosition: {x: -190, y: -20, z: 0}
-  m_ExitPosition: {x: -190, y: 60, z: 0}
+  m_AnyStatePosition: {x: -100, y: 20, z: 0}
+  m_EntryPosition: {x: -100, y: -20, z: 0}
+  m_ExitPosition: {x: -100, y: 60, z: 0}
   m_ParentStateMachinePosition: {x: 800, y: 20, z: 0}
   m_DefaultState: {fileID: -848643113278450592}
 --- !u!114 &-6965591254913163572
@@ -477,6 +478,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 0aa09eff68005c44792e7659fb5f51e0, type: 2}
   - {fileID: 11400000, guid: fcd0a8f1809ee5447963a7793f9eaf83, type: 2}
   - {fileID: 11400000, guid: 1bf64c136cd581f4eb04d3b85642b129, type: 2}
+  - {fileID: 11400000, guid: a66418d0405cfdd4cb55044b6dd2e8f4, type: 2}
   CharacterController: {fileID: 0}
 --- !u!1101 &-1861038542628946137
 AnimatorStateTransition:
@@ -772,6 +774,8 @@ MonoBehaviour:
   ListAbilityData:
   - {fileID: 11400000, guid: c621620ab1cd3b641b348a14e2dd9a0d, type: 2}
   - {fileID: 11400000, guid: 2fc097234341ce749b76f79b9e598eb0, type: 2}
+  - {fileID: 11400000, guid: 6bba1dc48585b4d449ea673e169c91bd, type: 2}
+  - {fileID: 11400000, guid: ae2623735be836a498264403e7efb947, type: 2}
   CharacterController: {fileID: 0}
 --- !u!1101 &-42617639417039451
 AnimatorStateTransition:
@@ -823,7 +827,7 @@ AnimatorController:
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
-    m_DefaultBool: 0
+    m_DefaultBool: 1
     m_Controller: {fileID: 9100000}
   - m_Name: RunBack
     m_Type: 4
@@ -1217,6 +1221,7 @@ MonoBehaviour:
   ListAbilityData:
   - {fileID: 11400000, guid: 7ed9aca17d83e14428ad5aef7604a696, type: 2}
   - {fileID: 11400000, guid: 2fc097234341ce749b76f79b9e598eb0, type: 2}
+  - {fileID: 11400000, guid: 6bba1dc48585b4d449ea673e169c91bd, type: 2}
   CharacterController: {fileID: 0}
 --- !u!1101 &5018933486437625874
 AnimatorStateTransition:

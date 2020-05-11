@@ -28,90 +28,89 @@ namespace MonkeyGame.Scripts
         public bool     TurnRight;
         public float    GravityMultiplier;
         public bool     Grounded;
-        [Tooltip("Hero rotation speed to direction's camera.")] [SerializeField] [Range(0.1f, 3f)] 
-            float TurnSpeed;
+        public Vector3  Forward;
+        [Range(0, 500)] public float     JumpForce;
+        [Range(0, 20)]  public float     Speed;
+        [Tooltip("Hero rotation speed to direction's camera.")] [SerializeField] [Range(0.1f, 3f)] float TurnSpeed;
 
         [Header("Collision")]
-        [Tooltip("BoxCollider for detection spheres.")]                             [SerializeField]    CapsuleCollider         GroundDetectorCollider;
-        [Tooltip("Helper :)")]                                                      [SerializeField]    GameObject          ColliderEdgePrefab;
-        [Tooltip("Start point for ground detection line.")]                         public              List<GameObject>    BottomSpheres   = new List<GameObject>();
-        [Tooltip("Start point for hindrance detection line for move forward.")]     public              List<GameObject>    FrontSpheres    = new List<GameObject>();
+        [Tooltip("CapsuleCollider for detection spheres.")] [SerializeField] CapsuleCollider GroundDetectorCollider;
+        [Tooltip("Helper :)")] [SerializeField] GameObject ColliderEdgePrefab;
+        [Tooltip("Start point for ground detection line.")] public List<GameObject> BottomSpheres = new List<GameObject>();
+        [Tooltip("Start point for hindrance detection line for move forward.")] public List<GameObject> FrontSpheres = new List<GameObject>();
 
-        [Header("Others")]
+        [Header("Components")]
         [SerializeField] Animator Animator;
+        [Tooltip("CapsuleCollider's Player.")] [SerializeField] CapsuleCollider CapsuleCollider;
 
-        public  Rigidbody Rigidbody => rigidbody;
+        [Header("UpdateCapsuleCollider")]
+        public bool     UpdatingCapsuleCollider;
+        public float    TargetHeight;
+        public float    Size_Speed;
+        public Vector3  TargetCenter;
+        public float    Center_Speed;
+
+        public Rigidbody Rigidbody => rigidbody;
         private Rigidbody rigidbody;
-
-
-
-
-
-        private float curretTime = 0;
-        [SerializeField] AnimationCurve Gravity;
-
-        float height = 0.5f;
-        float heightPadding = 0.05f;
-
-        Vector3 Forward;
 
         private void Awake()
         {
-            if(GroundDetectorCollider == null) 
-                GroundDetectorCollider = GetComponent<CapsuleCollider>();
+            if (GroundDetectorCollider == null) GroundDetectorCollider  = GetComponent<CapsuleCollider>();
+            if (CapsuleCollider == null)        CapsuleCollider         = GetComponent<CapsuleCollider>();
 
-            //Środek collidera
             Vector3 bottom = GroundDetectorCollider.bounds.center - (Vector3.up * GroundDetectorCollider.bounds.extents.y);
-            //Promień kuli
             Vector3 curve = bottom + (Vector3.up * GroundDetectorCollider.radius);
 
             GameObject newObj = CreateEdgeSphere(curve);
             newObj.transform.parent = this.transform;
             BottomSpheres.Add(newObj);
 
-            //CreateBottom(GroundDetectorCollider, ColliderEdgePrefab, BottomSpheres, 3);       
+            Forward = Vector3.forward;
         }
 
         private void Start()
         {
-            if (Animator == null)   Animator    = GetComponent<Animator>();
-            if (rigidbody == null)  rigidbody   = GetComponent<Rigidbody>();
+            if (Animator == null) Animator = GetComponent<Animator>();
+            if (rigidbody == null) rigidbody = GetComponent<Rigidbody>();
         }
 
         private void FixedUpdate()
         {
-            //if (RunForward)
-            //{
-            //    MoveForward(15);
-            //}
+            // Tu działa grawitacja na skok
+            if (!Jump)
+                Rigidbody.velocity += (-Vector3.up * GravityMultiplier);
 
-            if (Input.anyKey)
-            {
-                // Tu działa grawitacja na skok
-                //if (!Jump)
-                //    Rigidbody.velocity += (-Vector3.up * GravityMultiplier);
-            }
+            UpdateCapsuleColliderSize();
+            UpdateCapsuleColliderCenter();
         }
 
-        //// Update is called once per frame
-        void Update()
+        public void UpdateCapsuleColliderSize()
         {
+            if (!UpdatingCapsuleCollider)
+            {
+                return;
+            }
+
+            //Debug.Log(Mathf.Sqrt(CapsuleCollider.height - TargetHeight) + "> 0.01f");
+            //if (Mathf.Sqrt(CapsuleCollider.height - TargetHeight) > 0.01f)
             //if (!Animator.GetBool("Grounded"))
             //{
-            //    curretTime += Time.deltaTime;
-            //    GravityMultiplier = Gravity.Evaluate(curretTime);
+                CapsuleCollider.height = Mathf.Lerp(CapsuleCollider.height, TargetHeight, Time.deltaTime * Size_Speed);
             //}
-            //else 
-            //{
-            //    curretTime = 0;
-            //}
-            //Debug.Log("CurrentTime GraviryM: " + curretTime);
+        }
 
-            //if (curretTime > 5f)
+        public void UpdateCapsuleColliderCenter()
+        {
+            if (!UpdatingCapsuleCollider)
+            {
+                return;
+            }
+
+            // Debug.Log(Vector3.SqrMagnitude(CapsuleCollider.center - TargetCenter) + " > 0.01f");
+            // if (Vector3.SqrMagnitude(CapsuleCollider.center - TargetCenter) > 0.01f)
+            //if(!Animator.GetBool("Grounded"))
             //{
-            //    Debug.Log("CurrentTime GraviryM: " + curretTime);
-            //    Debug.Log("GraviryM: " + GravityMultiplier);
-            //    Debug.Break();
+                CapsuleCollider.center = Vector3.Lerp(CapsuleCollider.center, TargetCenter, Time.deltaTime * Center_Speed);
             //}
         }
 
@@ -120,8 +119,6 @@ namespace MonkeyGame.Scripts
             Vector3 m_Move = Vector3.Scale(Camera.main.transform.forward, new Vector3(1, 0, 1)).normalized;
 
             if (m_Move.magnitude > 1f) m_Move.Normalize();
-
-
 
             m_Move = transform.InverseTransformDirection(m_Move);
             float m_TurnAmount = Mathf.Atan2(m_Move.x, m_Move.z);
@@ -189,13 +186,5 @@ namespace MonkeyGame.Scripts
 
         public GameObject CreateEdgeSphere(Vector3 pos) 
             => Instantiate(ColliderEdgePrefab, pos, Quaternion.identity);
-
-        public void MoveForward(float Speed)
-        {
-            transform.Translate(Vector3.forward * Speed * Time.deltaTime);
-            RotateToDirectionCamera();
-        }
-
-        //public 
     }
 }

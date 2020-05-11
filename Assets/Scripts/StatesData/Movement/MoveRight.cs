@@ -39,7 +39,7 @@ namespace MonkeyGame.Scripts
 
         public override void OnExit(CharacterState characterState, Animator animator, AnimatorStateInfo stateInfo)
         {
-
+            animator.SetBool(TransitionParameter.RunRight.ToString(), false);
         }
     }
 }
